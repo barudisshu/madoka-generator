@@ -1,0 +1,15 @@
+
+generator:
+  datasource:
+    # mysql or oracle, default mysql
+    type: mysql
+    url: jdbc:mysql://127.0.0.1:3306/ipua?characterEncoding=utf-8
+    username: root
+    password: root
+
+  package: com.cplier.auth
+  template:
+    base-path: mybatis-plus
+    output-paths: |
+      Model.java.vm: main/java/{packagePath}/model/{className}.java
+      Mapper.java.vm: main/java/{packagePath}/dao/{className}Mapper.java
