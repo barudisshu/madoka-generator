@@ -6,7 +6,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.*;
 import java.util.Date;
 
 @Setter
@@ -26,7 +26,9 @@ public class MicroService {
   @NotBlank(message = "标识必填")
   private String identification;
 
-  @NotBlank(message = "端口号唯一，默认随机4位数")
+  @NotNull(message = "端口号唯一，默认随机4位数")
+  @Min(value = 1, message = "必须大于0")
+  @Max(value = 9999, message = "限定4位数")
   private int port;
 
   @Temporal(TemporalType.TIMESTAMP)

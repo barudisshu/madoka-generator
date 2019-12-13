@@ -15,22 +15,32 @@
     <h2 class="mb-5">New Service</h2>
     <div class="row">
         <div class="col-md-6">
-            <form action="#" th:action="@{/addservice}" th:object="${service}" method="post">
+            <form action="#" th:action="@{/add}" th:object="${microService}" method="post">
                 <div class="row">
                     <div class="form-group col-md-6">
-                        <label for="name" class="col-form-label">Name</label>
+                        <label for="name" class="col-form-label">服务名称</label>
                         <input type="text" th:field="*{name}" class="form-control" id="name" placeholder="Name">
                         <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="email" class="col-form-label">Email</label>
-                        <input type="text" th:field="*{email}" class="form-control" id="email" placeholder="Email">
-                        <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger"></span>
+                        <label for="description" class="col-form-label">描述</label>
+                        <input type="text" th:field="*{description}" class="form-control" id="description" placeholder="Description">
+                        <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="identification" class="col-form-label">标识</label>
+                        <input type="text" th:field="*{identification}" class="form-control" id="identification" placeholder="Identification">
+                        <span th:if="${#fields.hasErrors('identification')}" th:errors="*{identification}" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="port" class="col-form-label">端口</label>
+                        <input type="number" min="0" step="1" th:field="*{port}" class="form-control" id="port" placeholder="9321">
+                        <span th:if="${#fields.hasErrors('port')}" th:errors="*{port}" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6 mt-5">
-                        <input type="submit" class="btn btn-primary" value="Add User">
+                        <input type="submit" class="btn btn-primary" value="创建服务">
                     </div>
                 </div>
             </form>

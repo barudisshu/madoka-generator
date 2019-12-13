@@ -19,7 +19,13 @@ public class MicroServiceController {
 
   @Resource MicroServiceService microServiceService;
 
-  @PostMapping("/addservice")
+  @GetMapping("add")
+  public String addPage(MicroService microService, Model model) {
+    model.addAttribute("microService", microService);
+    return "add-service";
+  }
+
+  @PostMapping("/add")
   public String addService(@Valid MicroService microService, BindingResult result, Model model) {
     if (result.hasErrors()) {
       return "add-service";
@@ -27,7 +33,7 @@ public class MicroServiceController {
 
     MicroService update = microServiceService.save(microService);
     log.debug("the service={} has been created", update.getId());
-    model.addAttribute("services", microServiceService.findAll());
+    model.addAttribute("microServices", microServiceService.findAll());
     return "index";
   }
 
@@ -39,11 +45,11 @@ public class MicroServiceController {
       Model model) {
     if (result.hasErrors()) {
       microService.setId(id);
-      return "update-service";
+      return "edit-service";
     }
 
     microServiceService.save(microService);
-    model.addAttribute("services", microServiceService.findAll());
+    model.addAttribute("microServices", microServiceService.findAll());
     return "index";
   }
 
@@ -53,7 +59,7 @@ public class MicroServiceController {
         microServiceService
             .findById(id)
             .orElseThrow(() -> new IllegalArgumentException("Invalid service Id:" + id));
-    model.addAttribute("service", edit);
+    model.addAttribute("microService", edit);
     return "edit-service";
   }
 
@@ -64,7 +70,7 @@ public class MicroServiceController {
             .findById(id)
             .orElseThrow(() -> new IllegalArgumentException("Invalid service Id:" + id));
     microServiceService.delete(microService);
-    model.addAttribute("services", microServiceService.findAll());
+    model.addAttribute("microServices", microServiceService.findAll());
     return "index";
   }
 }
