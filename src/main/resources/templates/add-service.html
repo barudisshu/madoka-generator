@@ -12,9 +12,9 @@
 </head>
 <body>
 <div class="container my-5">
-    <h2 class="mb-5">New Service</h2>
+    <h2 class="mb-5">新建服务</h2>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-10">
             <form action="#" th:action="@{/add}" th:object="${microService}" method="post">
                 <div class="row">
                     <div class="form-group col-md-6">
@@ -31,6 +31,17 @@
                         <label for="identification" class="col-form-label">标识</label>
                         <input type="text" th:field="*{identification}" class="form-control" id="identification" placeholder="Identification">
                         <span th:if="${#fields.hasErrors('identification')}" th:errors="*{identification}" class="text-danger"></span>
+                        <span th:if="${#fields.hasErrors('global')}" th:errors="*{global}" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="tableNames" class="col-form-label">表名(多个用","分隔)</label>
+                        <input type="text" th:field="*{tableNames}" class="form-control" id="tableNames" placeholder="TableNames">
+                        <span th:if="${#fields.hasErrors('tableNames')}" th:errors="*{tableNames}" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="packet" class="col-form-label">包名</label>
+                        <input type="text" th:field="*{packet}" class="form-control" id="packet" placeholder="com.cplier.auth">
+                        <span th:if="${#fields.hasErrors('packet')}" th:errors="*{packet}" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="port" class="col-form-label">端口</label>

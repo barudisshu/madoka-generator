@@ -1,9 +1,11 @@
 package org.cplier.codegen.service.impl;
 
+import org.cplier.codegen.annotation.OnCreate;
 import org.cplier.codegen.entity.MicroService;
 import org.cplier.codegen.repository.MicroServiceRepository;
 import org.cplier.codegen.service.MicroServiceService;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import javax.annotation.Resource;
 import java.util.Optional;
@@ -11,8 +13,7 @@ import java.util.Optional;
 @Service
 public class MicroServiceServiceImpl implements MicroServiceService {
 
-  @Resource
-  MicroServiceRepository microServiceRepository;
+  @Resource MicroServiceRepository microServiceRepository;
 
   @Override
   public MicroService save(MicroService microService) {

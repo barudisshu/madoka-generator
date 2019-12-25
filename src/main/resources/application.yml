@@ -27,13 +27,6 @@ server:
   port: 3321
 
 generator:
-  datasource:
-    # mysql or oracle, default mysql
-    type: mysql
-    url: jdbc:mysql://127.0.0.1:3306/ipua?characterEncoding=utf-8
-    username: root
-    password: root
-  package: com.cplier.auth
   template:
     base-path: mybatis-plus
     output-paths: |

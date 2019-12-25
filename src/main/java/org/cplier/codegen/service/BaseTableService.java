@@ -13,20 +13,11 @@ import java.util.List;
 
 public abstract class BaseTableService implements TableService {
 
-  @Value("${generator.datasource.url}")
-  private String url;
-
-  @Value("${generator.datasource.username}")
-  private String username;
-
-  @Value("${generator.datasource.password}")
-  private String password;
-
   protected abstract String getDriverClassName();
 
   @Override
-  public Table getTable(String tableName) throws Exception {
-    try (Connection connection = getConnection()) {
+  public Table getTable(String url, String username, String password, String tableName) throws Exception {
+    try (Connection connection = getConnection(url, username, password)) {
       Table table = getMetaDataTable(connection, tableName);
       if (table == null) {
         return null;
@@ -81,7 +72,7 @@ public abstract class BaseTableService implements TableService {
     return columns;
   }
 
-  private Connection getConnection() throws SQLException, ClassNotFoundException {
+  private Connection getConnection(String url, String username, String password) throws SQLException, ClassNotFoundException {
     Class.forName(getDriverClassName());
     return DriverManager.getConnection(url, username, password);
   }

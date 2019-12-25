@@ -1,6 +1,6 @@
 package org.cplier.codegen.constant;
 
-public interface KeyConsts {
+public interface KeyConstants {
 
   String PACKAGE_PATH = "packagePath";
   String CLASS_NAME = "className";

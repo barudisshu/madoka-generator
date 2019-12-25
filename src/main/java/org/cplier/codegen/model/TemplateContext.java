@@ -1,7 +1,7 @@
 package org.cplier.codegen.model;
 
 import org.apache.commons.lang3.StringUtils;
-import org.cplier.codegen.constant.KeyConsts;
+import org.cplier.codegen.constant.KeyConstants;
 import org.cplier.codegen.util.ConfigUtils;
 import org.cplier.codegen.util.SpringContextUtils;
 import org.cplier.codegen.util.TemplateUtils;
@@ -31,8 +31,8 @@ public class TemplateContext {
     systemVariables.put("osVersion", properties.getProperty("os.version"));
   }
 
-  public static Builder newBuilder() {
-    return new Builder();
+  public static Builder newBuilder(String packageName) {
+    return new Builder(packageName);
   }
 
   public static void setSystemVariable(String key, Object value) {
@@ -75,22 +75,21 @@ public class TemplateContext {
 
   public static class Builder {
 
-    private Environment environment = SpringContextUtils.getBean(Environment.class);
-
     private TemplateContext context = new TemplateContext();
 
-    private Builder() {
-      String packageName = environment.getProperty("generator.package", "pkg");
-      context.getDynamicPathVariables().put(KeyConsts.PACKAGE_PATH, packageName.replace(".", "/"));
+    private Builder(String packageName) {
+      context
+          .getDynamicPathVariables()
+          .put(KeyConstants.PACKAGE_PATH, packageName.replace(".", "/"));
     }
 
     public Builder table(Table table) {
       if (table != null) {
         context.setTable(table);
-        context.getDynamicPathVariables().put(KeyConsts.CLASS_NAME, table.getClassName());
+        context.getDynamicPathVariables().put(KeyConstants.CLASS_NAME, table.getClassName());
         context
             .getDynamicPathVariables()
-            .put(KeyConsts.LOWERCASE_CLASS_NAME, table.getLowercaseClassName());
+            .put(KeyConstants.LOWERCASE_CLASS_NAME, table.getLowercaseClassName());
       }
       return this;
     }
@@ -101,13 +100,14 @@ public class TemplateContext {
         for (Map.Entry<String, String> entry : variables.entrySet()) {
           cloneVariables.put(entry.getKey(), entry.getValue());
         }
-        String className = cloneVariables.get(KeyConsts.CLASS_NAME);
-        String lowercaseClassName = cloneVariables.get(KeyConsts.LOWERCASE_CLASS_NAME);
+        String className = cloneVariables.get(KeyConstants.CLASS_NAME);
+        String lowercaseClassName = cloneVariables.get(KeyConstants.LOWERCASE_CLASS_NAME);
         if (StringUtils.isNotBlank(className)) {
-          cloneVariables.put(KeyConsts.LOWERCASE_CLASS_NAME, StringUtils.uncapitalize(className));
+          cloneVariables.put(
+              KeyConstants.LOWERCASE_CLASS_NAME, StringUtils.uncapitalize(className));
         } else if (StringUtils.isNotBlank(lowercaseClassName)) {
           cloneVariables.put(
-              KeyConsts.CLASS_NAME,
+              KeyConstants.CLASS_NAME,
               lowercaseClassName.substring(0, 1).toUpperCase() + lowercaseClassName.substring(1));
         }
         for (Map.Entry<String, String> entry : cloneVariables.entrySet()) {

@@ -12,9 +12,9 @@
 </head>
 <body>
 <div class="container my-5">
-    <h2 class="mb-5">Update Service</h2>
+    <h2 class="mb-5">更新信息</h2>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-10">
             <form action="#" th:action="@{/update/{id}(id=${microService.id})}" th:object="${microService}" method="post">
                 <div class="form-group col-md-6">
                     <label for="name" class="col-form-label">服务名称</label>
@@ -28,6 +28,16 @@
                 </div>
                 <div class="form-group col-md-6">
                     <input type="hidden" th:field="*{identification}">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="tableNames" class="col-form-label">表名(多个用","分隔)</label>
+                    <input type="text" th:field="*{tableNames}" class="form-control" id="tableNames" placeholder="TableNames">
+                    <span th:if="${#fields.hasErrors('tableNames')}" th:errors="*{tableNames}" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="packet" class="col-form-label">包名</label>
+                    <input type="text" th:field="*{packet}" class="form-control" id="packet" placeholder="com.cplier.auth">
+                    <span th:if="${#fields.hasErrors('packet')}" th:errors="*{packet}" class="text-danger"></span>
                 </div>
                 <div class="form-group col-md-6">
                     <input type="hidden" th:field="*{port}">

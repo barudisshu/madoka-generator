@@ -39,33 +39,50 @@ public class GeneratorServiceImpl implements GeneratorService {
   private String datasourceType;
 
   @Override
-  public void generateZip(String[] tableNames, String zipPath) {
+  public void generateZip(String url, String username, String password, String packageName, String[] tableNames, String zipPath) {
     TableItem[] tableItems = new TableItem[tableNames.length];
     for (int i = 0; i < tableNames.length; i++) {
       tableItems[i] = new TableItem(tableNames[i]);
     }
-    generateZip(tableItems, zipPath);
+    generateZip(url, username, password, packageName, tableItems, zipPath);
   }
 
   @Override
-  public void generateZip(TableItem[] tableItems, String zipPath) {
-    TableService tableService = SpringContextUtils.getBean(datasourceType, TableService.class);
+  public void generateZip(String url, String username, String password, String packageName, String[] tableNames, ZipOutputStream zos) {
+    TableItem[] tableItems = new TableItem[tableNames.length];
+    for (int i = 0; i < tableNames.length; i++) {
+      tableItems[i] = new TableItem(tableNames[i]);
+    }
+    generateZip(url, username, password, packageName, tableItems, zos);
+  }
+
+  @Override
+  public void generateZip(String url, String username, String password, String packageName, TableItem[] tableItems, String zipPath) {
     try (FileOutputStream fos = new FileOutputStream(zipPath)) {
-      try (ZipOutputStream zos = new ZipOutputStream(fos)) {
-        for (TableItem item : tableItems) {
-          Table table = tableService.getTable(item.getTableName());
-          if (table == null) {
-            log.warn("表[{}] 信息查询失败", item.getTableName());
-            continue;
-          }
-          generatorCode(
-              TemplateContext.newBuilder()
-                  .templateVariables(item.getTemplateVariables())
-                  .table(table)
-                  .dynamicPathVariables(item.getDynamicPathVariables())
-                  .build(),
-              zos);
+      ZipOutputStream zos = new ZipOutputStream(fos);
+      generateZip(url, username, password, packageName, tableItems, zos);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  @Override
+  public void generateZip(String url, String username, String password, String packageName, TableItem[] tableItems, ZipOutputStream zos) {
+    TableService tableService = SpringContextUtils.getBean(datasourceType, TableService.class);
+    try {
+      for (TableItem item : tableItems) {
+        Table table = tableService.getTable(url, username, password, item.getTableName());
+        if (table == null) {
+          log.warn("表[{}] 信息查询失败", item.getTableName());
+          continue;
         }
+        generatorCode(
+            TemplateContext.newBuilder(packageName)
+                .templateVariables(item.getTemplateVariables())
+                .table(table)
+                .dynamicPathVariables(item.getDynamicPathVariables())
+                .build(),
+            zos);
       }
     } catch (Exception e) {
       e.printStackTrace();
